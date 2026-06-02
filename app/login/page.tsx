@@ -163,12 +163,26 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label style={{
-                display: 'block', fontSize: '11px', color: 'var(--text-muted)',
-                textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600, marginBottom: '6px',
-              }}>
-                Password
-              </label>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <label style={{
+                  fontSize: '11px', color: 'var(--text-muted)',
+                  textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600,
+                }}>
+                  Password
+                </label>
+                {mode === 'login' && (
+                  <button
+                    type="button"
+                    onClick={() => router.push('/forgot-password')}
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      fontSize: '11px', color: 'var(--accent)', fontFamily: 'inherit', padding: 0,
+                    }}
+                  >
+                    Forgot password?
+                  </button>
+                )}
+              </div>
               <input
                 type="password"
                 value={password}
