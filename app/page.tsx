@@ -2,17 +2,20 @@
 
 export const dynamic = 'force-dynamic'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import StatsBar from '@/components/StatsBar'
 import Charts from '@/components/Charts'
 import Leaderboard from '@/components/Leaderboard'
 import TaskList from '@/components/TaskList'
+import CalendarView from '@/components/CalendarView'
+import FilterBar from '@/components/FilterBar'
 import AddTaskModal from '@/components/AddTaskModal'
 import { getMembers, getTasks } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import type { Member, Task } from '@/lib/types'
+import type { ViewMode, Filters } from '@/components/FilterBar'
 
 function Spinner() {
   return (
@@ -38,6 +41,8 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [dataLoading, setDataLoading] = useState(true)
   const [showAddTask, setShowAddTask] = useState(false)
+  const [view, setView] = useState<ViewMode>('list')
+  const [filters, setFilters] = useState<Filters>({ member: '', category: '', status: 'all' })
 
   const load = useCallback(async () => {
     try {
@@ -57,6 +62,16 @@ export default function Home() {
     if (!currentMember) { router.replace('/setup'); return }
     load()
   }, [authLoading, user, currentMember, router, load])
+
+  const filteredTasks = useMemo(() => {
+    return tasks.filter(t => {
+      if (filters.member && t.member_id !== filters.member) return false
+      if (filters.category && t.category !== filters.category) return false
+      if (filters.status === 'pending' && t.completed) return false
+      if (filters.status === 'completed' && !t.completed) return false
+      return true
+    })
+  }, [tasks, filters])
 
   if (authLoading || dataLoading) return <Spinner />
 
@@ -80,7 +95,20 @@ export default function Home() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <Charts members={members} tasks={tasks} />
-            <TaskList tasks={tasks} onUpdate={load} currentMemberId={currentMember.id} />
+            <FilterBar
+              view={view}
+              onViewChange={setView}
+              filters={filters}
+              onFiltersChange={setFilters}
+              members={members}
+              taskCount={tasks.length}
+              filteredCount={filteredTasks.length}
+            />
+            {view === 'list' ? (
+              <TaskList tasks={filteredTasks} onUpdate={load} currentMemberId={currentMember.id} />
+            ) : (
+              <CalendarView tasks={filteredTasks} currentMemberId={currentMember.id} />
+            )}
           </div>
           <Leaderboard members={members} tasks={tasks} onUpdate={load} />
         </div>
