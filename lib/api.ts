@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import type { Member, Task } from './types'
+import { normalizeMemberColor, type Member, type Task } from './types'
 
 export async function getMembers(): Promise<Member[]> {
   const { data, error } = await supabase
@@ -93,6 +93,7 @@ export function getMemberStats(members: Member[], tasks: Task[]) {
     const total = memberTasks.length
     return {
       ...m,
+      color: normalizeMemberColor(m.color),
       total,
       completed,
       pending: total - completed,

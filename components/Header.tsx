@@ -3,7 +3,7 @@
 import { Bot, LogOut, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { signOut } from '@/lib/auth'
-import type { Member } from '@/lib/types'
+import { normalizeMemberColor, type Member } from '@/lib/types'
 
 interface HeaderProps {
   onAddTask: () => void
@@ -14,6 +14,7 @@ interface HeaderProps {
 
 export default function Header({ onAddTask, taskCount, memberCount, currentMember }: HeaderProps) {
   const router = useRouter()
+  const currentMemberColor = normalizeMemberColor(currentMember?.color)
 
   async function handleSignOut() {
     await signOut()
@@ -62,10 +63,10 @@ export default function Header({ onAddTask, taskCount, memberCount, currentMembe
             }}>
               <div style={{
                 width: '20px', height: '20px', borderRadius: '50%',
-                backgroundColor: `${currentMember.color}22`,
-                border: `1.5px solid ${currentMember.color}55`,
+                backgroundColor: `${currentMemberColor}22`,
+                border: `1.5px solid ${currentMemberColor}55`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '10px', fontWeight: 700, color: currentMember.color,
+                fontSize: '10px', fontWeight: 700, color: currentMemberColor,
               }}>
                 {currentMember.name.charAt(0).toUpperCase()}
               </div>

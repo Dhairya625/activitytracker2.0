@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { CheckCircle2, Circle, X } from 'lucide-react'
-import type { Member, Task } from '@/lib/types'
+import { normalizeMemberColor, type Member, type Task } from '@/lib/types'
 import { CATEGORIES } from '@/lib/types'
 import { createTask, updateTask } from '@/lib/api'
 
@@ -26,6 +26,7 @@ function todayInputValue() {
 
 export default function AddTaskModal({ currentMember, task, onClose, onCreated }: AddTaskModalProps) {
   const isEditing = Boolean(task)
+  const currentMemberColor = normalizeMemberColor(currentMember.color)
   const [title, setTitle] = useState(task?.title ?? '')
   const [description, setDescription] = useState(task?.description ?? '')
   const [category, setCategory] = useState<string>(task?.category ?? CATEGORIES[0])
@@ -121,15 +122,15 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '3px' }}>
               <div style={{
                 width: '14px', height: '14px', borderRadius: '50%',
-                backgroundColor: `${currentMember.color}22`,
-                border: `1.5px solid ${currentMember.color}55`,
+                backgroundColor: `${currentMemberColor}22`,
+                border: `1.5px solid ${currentMemberColor}55`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '8px', fontWeight: 700, color: currentMember.color,
+                fontSize: '8px', fontWeight: 700, color: currentMemberColor,
               }}>
                 {currentMember.name.charAt(0).toUpperCase()}
               </div>
               <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                {isEditing ? 'Updating' : 'Logging as'} <span style={{ color: currentMember.color }}>{currentMember.name}</span>
+                {isEditing ? 'Updating' : 'Logging as'} <span style={{ color: currentMemberColor }}>{currentMember.name}</span>
               </span>
             </div>
           </div>

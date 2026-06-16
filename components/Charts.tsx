@@ -65,23 +65,25 @@ const CustomPieTooltip = ({ active, payload }: {
   )
 }
 
+const CHART_ACCENTS = ['#A8A29E', '#87A987', '#B9A36A', '#8FA3A6', '#9B8EA5', '#A78B7A', '#B08C7A', '#9CA3AF']
+
 export default function Charts({ members, tasks }: ChartsProps) {
   const stats = getMemberStats(members, tasks)
 
-  const barData = stats.map(s => ({
+  const barData = stats.map((s, index) => ({
     name: s.name.length > 10 ? s.name.slice(0, 10) + '…' : s.name,
     fullName: s.name,
     Completed: s.completed,
     Pending: s.pending,
-    fill: s.color,
+    fill: CHART_ACCENTS[index % CHART_ACCENTS.length],
   }))
 
   const pieData = stats
     .filter(s => s.total > 0)
-    .map(s => ({
+    .map((s, index) => ({
       name: s.name,
       value: s.total,
-      color: s.color,
+      color: CHART_ACCENTS[index % CHART_ACCENTS.length],
     }))
 
   const cardStyle = {

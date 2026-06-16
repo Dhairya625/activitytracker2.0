@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight, CheckCircle2, Circle } from 'lucide-react'
-import type { Task } from '@/lib/types'
+import { normalizeMemberColor, type Task } from '@/lib/types'
 
 interface CalendarViewProps {
   tasks: Task[]
@@ -220,7 +220,7 @@ export default function CalendarView({ tasks }: CalendarViewProps) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {selectedTasks.map(task => {
                 const catColor = CATEGORY_COLORS[task.category] ?? '#6b7280'
-                const memberColor = task.member?.color ?? '#6b7280'
+                const memberColor = normalizeMemberColor(task.member?.color)
                 return (
                   <div key={task.id} style={{
                     display: 'flex', alignItems: 'center', gap: '10px',

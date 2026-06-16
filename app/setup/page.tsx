@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Check, Plus, UserCircle2 } from 'lucide-react'
 import { getUnclaimedMembers, claimMember, createAndClaimMember, getMemberForUser } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
-import { MEMBER_COLORS } from '@/lib/types'
+import { MEMBER_COLORS, normalizeMemberColor } from '@/lib/types'
 import type { Member } from '@/lib/types'
 
 export default function SetupPage() {
@@ -115,6 +115,7 @@ export default function SetupPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {unclaimed.map(m => {
                   const isSelected = selected === m.id && !showNew
+                  const memberColor = normalizeMemberColor(m.color)
                   return (
                     <button
                       key={m.id}
@@ -122,8 +123,8 @@ export default function SetupPage() {
                       style={{
                         display: 'flex', alignItems: 'center', gap: '12px',
                         padding: '10px 14px', borderRadius: 'var(--radius-sm)',
-                        border: `1px solid ${isSelected ? m.color + '55' : 'var(--border)'}`,
-                        backgroundColor: isSelected ? `${m.color}10` : 'var(--bg-elevated)',
+                        border: `1px solid ${isSelected ? memberColor + '55' : 'var(--border)'}`,
+                        backgroundColor: isSelected ? `${memberColor}10` : 'var(--bg-elevated)',
                         cursor: 'pointer', textAlign: 'left', transition: 'all 0.15s',
                       }}
                       onMouseEnter={e => { if (!isSelected) e.currentTarget.style.borderColor = 'var(--border-hover)' }}
@@ -131,16 +132,16 @@ export default function SetupPage() {
                     >
                       <div style={{
                         width: '32px', height: '32px', borderRadius: '50%',
-                        backgroundColor: `${m.color}22`, border: `1.5px solid ${m.color}55`,
+                        backgroundColor: `${memberColor}22`, border: `1.5px solid ${memberColor}55`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '13px', fontWeight: 700, color: m.color, flexShrink: 0,
+                        fontSize: '13px', fontWeight: 700, color: memberColor, flexShrink: 0,
                       }}>
                         {m.name.charAt(0).toUpperCase()}
                       </div>
                       <span style={{ flex: 1, fontSize: '13px', color: 'var(--text-primary)', fontWeight: 500 }}>
                         {m.name}
                       </span>
-                      {isSelected && <Check size={15} color={m.color} />}
+                      {isSelected && <Check size={15} color={memberColor} />}
                     </button>
                   )
                 })}

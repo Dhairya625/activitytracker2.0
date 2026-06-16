@@ -1,7 +1,7 @@
 'use client'
 
 import { CalendarDays, CheckCircle2, Circle, Lock, Pencil, Tag, Trash2 } from 'lucide-react'
-import type { Task } from '@/lib/types'
+import { normalizeMemberColor, type Task } from '@/lib/types'
 import { toggleTask, deleteTask } from '@/lib/api'
 import { useState } from 'react'
 
@@ -83,7 +83,7 @@ export default function TaskList({ tasks, onUpdate, currentMemberId, onEdit }: T
         {tasks.map((task, i) => {
           const isOwn = task.member_id === currentMemberId
           const catColor = CATEGORY_COLORS[task.category] ?? '#6b7280'
-          const memberColor = task.member?.color ?? '#6b7280'
+          const memberColor = normalizeMemberColor(task.member?.color)
           const isLoading = loadingId === task.id
 
           return (
