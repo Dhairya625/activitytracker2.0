@@ -1,6 +1,6 @@
 'use client'
 
-import { Activity, Plus, LogOut } from 'lucide-react'
+import { Bot, LogOut, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { signOut } from '@/lib/auth'
 import type { Member } from '@/lib/types'
@@ -23,8 +23,9 @@ export default function Header({ onAddTask, taskCount, memberCount, currentMembe
   return (
     <header style={{
       borderBottom: '1px solid var(--border)',
-      backgroundColor: 'var(--bg-surface)',
+      backgroundColor: 'rgba(15,16,17,0.86)',
       position: 'sticky', top: 0, zIndex: 50,
+      backdropFilter: 'blur(18px)',
     }}>
       <div style={{
         maxWidth: '1400px', margin: '0 auto', padding: '0 24px',
@@ -33,20 +34,21 @@ export default function Header({ onAddTask, taskCount, memberCount, currentMembe
         {/* Left: logo + stats */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{
-            width: '28px', height: '28px', borderRadius: '6px',
-            backgroundColor: 'var(--accent-dim)', border: '1px solid rgba(0,212,255,0.2)',
+            width: '30px', height: '30px', borderRadius: '8px',
+            backgroundColor: 'var(--bg-elevated)', border: '1px solid var(--border-hover)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: 'inset 0 1px rgba(255,255,255,0.06)',
           }}>
-            <Activity size={14} color="var(--accent)" />
+            <Bot size={15} color="var(--accent)" />
           </div>
-          <span style={{ color: 'var(--text-primary)', fontWeight: 600, letterSpacing: '-0.02em' }}>
-            flowtrack
+          <span style={{ color: 'var(--text-primary)', fontWeight: 680, letterSpacing: '0' }}>
+            Activity
           </span>
           <span style={{
             color: 'var(--text-muted)', fontSize: '12px',
             paddingLeft: '12px', borderLeft: '1px solid var(--border)',
           }}>
-            {taskCount} tasks · {memberCount} members
+            {taskCount} tasks / {memberCount} members
           </span>
         </div>
 
@@ -56,7 +58,7 @@ export default function Header({ onAddTask, taskCount, memberCount, currentMembe
             <div style={{
               display: 'flex', alignItems: 'center', gap: '8px',
               padding: '5px 10px', borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--border)', backgroundColor: 'var(--bg-elevated)',
+              border: '1px solid var(--border)', backgroundColor: 'rgba(255,255,255,0.025)',
             }}>
               <div style={{
                 width: '20px', height: '20px', borderRadius: '50%',
@@ -77,13 +79,13 @@ export default function Header({ onAddTask, taskCount, memberCount, currentMembe
             onClick={onAddTask}
             style={{
               display: 'flex', alignItems: 'center', gap: '6px',
-              padding: '6px 12px', borderRadius: 'var(--radius-sm)',
-              border: '1px solid rgba(0,212,255,0.3)', backgroundColor: 'var(--accent-dim)',
-              color: 'var(--accent)', cursor: 'pointer', fontSize: '13px', fontWeight: 500,
-              transition: 'background-color 0.15s',
+              padding: '7px 12px', borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border-hover)', backgroundColor: 'var(--text-primary)',
+              color: 'var(--bg-base)', cursor: 'pointer', fontSize: '13px', fontWeight: 650,
+              transition: 'transform 0.15s, background-color 0.15s',
             }}
-            onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(0,212,255,0.18)')}
-            onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'var(--accent-dim)')}
+            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.backgroundColor = '#ffffff' }}
+            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.backgroundColor = 'var(--text-primary)' }}
           >
             <Plus size={13} />
             Log Task

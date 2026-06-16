@@ -12,6 +12,7 @@ import TaskList from '@/components/TaskList'
 import CalendarView from '@/components/CalendarView'
 import FilterBar from '@/components/FilterBar'
 import AddTaskModal from '@/components/AddTaskModal'
+import StreakPanel from '@/components/StreakPanel'
 import { getMembers, getTasks } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import type { Member, Task } from '@/lib/types'
@@ -90,15 +91,27 @@ export default function Home() {
         currentMember={currentMember}
       />
 
-      <main style={{
-        maxWidth: '1400px', margin: '0 auto', padding: '24px',
-        display: 'flex', flexDirection: 'column', gap: '16px',
-      }}>
-        <StatsBar tasks={tasks} />
+      <main className="dashboard-shell">
+        <div className="section-title">
+          <div>
+            <h2>Overview</h2>
+            <span>Daily signal, team pace, and completion health.</span>
+          </div>
+        </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <Charts members={members} tasks={tasks} />
+        <div className="overview-grid">
+          <StatsBar tasks={tasks} />
+          <StreakPanel members={members} tasks={tasks} currentMember={currentMember} />
+        </div>
+
+        <div className="dashboard-grid">
+          <div className="dashboard-main">
+            <div className="section-title">
+              <div>
+                <h2>Workspace</h2>
+                <span>Plan, log, and review the work stream.</span>
+              </div>
+            </div>
             <FilterBar
               view={view}
               onViewChange={setView}
@@ -119,7 +132,16 @@ export default function Home() {
               <CalendarView tasks={filteredTasks} />
             )}
           </div>
-          <Leaderboard members={members} tasks={tasks} onUpdate={load} />
+          <aside className="dashboard-rail">
+            <div className="section-title">
+              <div>
+                <h2>Team</h2>
+                <span>Distribution and momentum.</span>
+              </div>
+            </div>
+            <Leaderboard members={members} tasks={tasks} onUpdate={load} />
+            <Charts members={members} tasks={tasks} />
+          </aside>
         </div>
       </main>
 

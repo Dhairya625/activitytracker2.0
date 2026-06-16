@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Trophy, TrendingDown, Palette } from 'lucide-react'
+import { Palette, TrendingDown, Trophy } from 'lucide-react'
 import type { Member, Task } from '@/lib/types'
 import { getMemberStats, updateMemberColor } from '@/lib/api'
 import { MEMBER_COLORS } from '@/lib/types'
@@ -110,29 +110,42 @@ function MemberRow({
 
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => { setHovered(false) }}
+      onMouseEnter={e => {
+        setHovered(true)
+        e.currentTarget.style.transform = 'translateX(2px)'
+      }}
+      onMouseLeave={e => {
+        setHovered(false)
+        e.currentTarget.style.transform = 'translateX(0)'
+      }}
       style={{
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
         padding: '10px 12px',
         borderRadius: 'var(--radius-sm)',
-        backgroundColor: isLeader ? 'rgba(0,212,255,0.05)' : 'transparent',
-        border: `1px solid ${isLeader ? 'rgba(0,212,255,0.12)' : 'transparent'}`,
-        transition: 'background-color 0.15s',
+        backgroundColor: isLeader ? 'rgba(255,255,255,0.035)' : 'transparent',
+        border: `1px solid ${isLeader ? 'var(--border)' : 'transparent'}`,
+        transition: 'background-color 0.15s, transform 0.15s',
       }}
     >
       {/* Rank */}
       <div style={{
-        width: '22px',
+        width: '24px',
+        height: '24px',
+        borderRadius: '6px',
+        border: '1px solid var(--border)',
+        backgroundColor: isLeader ? 'var(--accent-dim)' : 'var(--bg-elevated)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         textAlign: 'center',
-        fontSize: '13px',
+        fontSize: '11px',
         fontWeight: 700,
-        color: index === 0 ? '#fbbf24' : index === 1 ? '#9ca3af' : index === 2 ? '#b45309' : 'var(--text-muted)',
+        color: isLeader ? 'var(--text-primary)' : 'var(--text-muted)',
         flexShrink: 0,
       }}>
-        {index === 0 && member.total > 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`}
+        {index + 1}
       </div>
 
       {/* Avatar */}
@@ -170,7 +183,7 @@ function MemberRow({
           }}>
             {member.name}
           </span>
-          {isLeader && <Trophy size={11} color="#fbbf24" />}
+          {isLeader && <Trophy size={11} color="var(--warning)" />}
           {isLagging && <TrendingDown size={11} color="var(--danger)" />}
 
           {/* Colour edit button — visible on hover */}
@@ -264,7 +277,8 @@ export default function Leaderboard({ members, tasks, onUpdate }: LeaderboardPro
       backgroundColor: 'var(--bg-card)',
       border: '1px solid var(--border)',
       borderRadius: 'var(--radius-lg)',
-      padding: '20px',
+      padding: '18px',
+      boxShadow: 'inset 0 1px rgba(255,255,255,0.035)',
     }}>
       <div style={{
         fontSize: '11px',

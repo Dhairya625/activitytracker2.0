@@ -30,12 +30,12 @@ export const CATEGORIES = [
 export type Category = typeof CATEGORIES[number]
 
 export const MEMBER_COLORS = [
-  '#00D4FF',
-  '#7C3AED',
-  '#10B981',
-  '#F59E0B',
-  '#EF4444',
-  '#EC4899',
-  '#8B5CF6',
-  '#06B6D4',
+  '#9CA3AF',
+  '#A8A29E',
+  '#87A987',
+  '#B9A36A',
+  '#A78B7A',
+  '#8FA3A6',
+  '#9B8EA5',
+  '#B08C7A',
 ] as const

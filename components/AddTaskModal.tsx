@@ -149,7 +149,7 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
               onChange={e => setTitle(e.target.value)}
               placeholder="What did you do?"
               style={inputStyle}
-              onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
+              onFocus={e => (e.target.style.borderColor = 'var(--border-hover)')}
               onBlur={e => (e.target.style.borderColor = 'var(--border)')}
               autoFocus
             />
@@ -165,7 +165,7 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
               placeholder="More details..."
               rows={2}
               style={{ ...inputStyle, resize: 'none' }}
-              onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
+              onFocus={e => (e.target.style.borderColor = 'var(--border-hover)')}
               onBlur={e => (e.target.style.borderColor = 'var(--border)')}
             />
           </div>
@@ -177,7 +177,7 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
               value={taskDate}
               onChange={e => setTaskDate(e.target.value)}
               style={{ ...inputStyle, colorScheme: 'dark' }}
-              onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
+              onFocus={e => (e.target.style.borderColor = 'var(--border-hover)')}
               onBlur={e => (e.target.style.borderColor = 'var(--border)')}
             />
           </div>
@@ -188,7 +188,7 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
               value={category}
               onChange={e => setCategory(e.target.value)}
               style={{ ...inputStyle, cursor: 'pointer' }}
-              onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
+              onFocus={e => (e.target.style.borderColor = 'var(--border-hover)')}
               onBlur={e => (e.target.style.borderColor = 'var(--border)')}
             >
               {CATEGORIES.map(c => (
@@ -209,8 +209,8 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   cursor: 'pointer',
-                  backgroundColor: completed ? 'rgba(16,185,129,0.08)' : 'var(--bg-elevated)',
-                  borderColor: completed ? 'rgba(16,185,129,0.25)' : 'var(--border)',
+                  backgroundColor: completed ? 'rgba(135,169,135,0.11)' : 'var(--bg-elevated)',
+                  borderColor: completed ? 'rgba(135,169,135,0.28)' : 'var(--border)',
                 }}
               >
                 <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -251,9 +251,9 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
               disabled={loading}
               style={{
                 flex: 2, padding: '9px', borderRadius: 'var(--radius-sm)',
-                border: '1px solid rgba(0,212,255,0.3)',
-                backgroundColor: loading ? 'rgba(0,212,255,0.06)' : 'var(--accent-dim)',
-                color: 'var(--accent)', cursor: loading ? 'not-allowed' : 'pointer',
+                border: '1px solid var(--border-hover)',
+                backgroundColor: loading ? 'var(--bg-elevated)' : 'var(--text-primary)',
+                color: loading ? 'var(--text-muted)' : 'var(--bg-base)', cursor: loading ? 'not-allowed' : 'pointer',
                 fontSize: '13px', fontWeight: 600, fontFamily: 'inherit',
               }}
             >

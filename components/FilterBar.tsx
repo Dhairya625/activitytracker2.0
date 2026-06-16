@@ -37,6 +37,7 @@ export default function FilterBar({
       backgroundColor: 'var(--bg-card)', border: '1px solid var(--border)',
       borderRadius: 'var(--radius-lg)', padding: '12px 16px',
       display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap',
+      boxShadow: 'inset 0 1px rgba(255,255,255,0.035)',
     }}>
       {/* View toggle */}
       <div style={{
@@ -67,9 +68,9 @@ export default function FilterBar({
                 padding: '4px 10px', borderRadius: '100px', fontSize: '11px',
                 fontWeight: 500, cursor: 'pointer', border: '1px solid',
                 transition: 'all 0.15s',
-                borderColor: filters.status === s ? 'var(--accent)' : 'var(--border)',
-                backgroundColor: filters.status === s ? 'rgba(0,212,255,0.1)' : 'transparent',
-                color: filters.status === s ? 'var(--accent)' : 'var(--text-muted)',
+                borderColor: filters.status === s ? 'var(--border-hover)' : 'var(--border)',
+                backgroundColor: filters.status === s ? 'var(--accent-dim)' : 'transparent',
+                color: filters.status === s ? 'var(--text-primary)' : 'var(--text-muted)',
               }}
             >
               {s === 'all' ? 'All' : s === 'pending' ? 'Pending' : 'Done'}
@@ -132,8 +133,8 @@ function ViewBtn({ active, onClick, children }: { active: boolean; onClick: () =
       style={{
         display: 'flex', alignItems: 'center', gap: '5px',
         padding: '5px 12px', fontSize: '11px', fontWeight: 500,
-        background: active ? 'rgba(0,212,255,0.1)' : 'transparent',
-        color: active ? 'var(--accent)' : 'var(--text-muted)',
+        background: active ? 'var(--accent-dim)' : 'transparent',
+        color: active ? 'var(--text-primary)' : 'var(--text-muted)',
         border: 'none', cursor: 'pointer', transition: 'all 0.15s',
       }}
     >
@@ -156,9 +157,9 @@ function SelectFilter({
       onChange={e => onChange(e.target.value)}
       style={{
         padding: '4px 8px', borderRadius: '6px', fontSize: '11px',
-        border: `1px solid ${value ? 'var(--accent)' : 'var(--border)'}`,
-        backgroundColor: value ? 'rgba(0,212,255,0.06)' : 'var(--bg-base)',
-        color: value ? 'var(--accent)' : 'var(--text-muted)',
+        border: `1px solid ${value ? 'var(--border-hover)' : 'var(--border)'}`,
+        backgroundColor: value ? 'var(--accent-dim)' : 'var(--bg-base)',
+        color: value ? 'var(--text-primary)' : 'var(--text-muted)',
         cursor: 'pointer', outline: 'none',
         appearance: 'none', paddingRight: '20px',
         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7280'/%3E%3C/svg%3E")`,

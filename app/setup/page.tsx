@@ -86,7 +86,7 @@ export default function SetupPage() {
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div style={{
             width: '44px', height: '44px', borderRadius: '10px',
-            backgroundColor: 'var(--accent-dim)', border: '1px solid rgba(0,212,255,0.25)',
+            backgroundColor: 'var(--accent-dim)', border: '1px solid var(--border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             margin: '0 auto 14px', boxShadow: '0 0 24px var(--accent-glow)',
           }}>
@@ -192,7 +192,7 @@ export default function SetupPage() {
                   border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)',
                   color: 'var(--text-primary)', fontSize: '13px', fontFamily: 'inherit', outline: 'none',
                 }}
-                onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
+                onFocus={e => (e.target.style.borderColor = 'var(--border-hover)')}
                 onBlur={e => (e.target.style.borderColor = 'var(--border)')}
               />
               <div>
@@ -244,8 +244,8 @@ export default function SetupPage() {
             disabled={loading || (!selected && !showNew)}
             style={{
               padding: '10px', borderRadius: 'var(--radius-sm)',
-              border: '1px solid rgba(0,212,255,0.3)',
-              backgroundColor: (loading || (!selected && !showNew)) ? 'rgba(0,212,255,0.04)' : 'var(--accent-dim)',
+              border: '1px solid var(--border-hover)',
+              backgroundColor: (loading || (!selected && !showNew)) ? 'var(--bg-elevated)' : 'var(--accent-dim)',
               color: (loading || (!selected && !showNew)) ? 'var(--text-muted)' : 'var(--accent)',
               cursor: (loading || (!selected && !showNew)) ? 'not-allowed' : 'pointer',
               fontSize: '13px', fontWeight: 600, fontFamily: 'inherit',

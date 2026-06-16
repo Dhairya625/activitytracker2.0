@@ -3,8 +3,8 @@ import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 
 export const metadata: Metadata = {
-  title: 'FlowTrack — Startup Activity Tracker',
-  description: 'Track tasks, see who leads, stay accountable.',
+  title: 'Activity Tracker',
+  description: 'Track tasks, compare team momentum, and maintain daily streaks.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

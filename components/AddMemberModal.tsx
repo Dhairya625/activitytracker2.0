@@ -97,7 +97,7 @@ export default function AddMemberModal({ onClose, onCreated }: AddMemberModalPro
                 fontFamily: 'inherit',
                 outline: 'none',
               }}
-              onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
+              onFocus={e => (e.target.style.borderColor = 'var(--border-hover)')}
               onBlur={e => (e.target.style.borderColor = 'var(--border)')}
             />
           </div>
@@ -127,7 +127,7 @@ export default function AddMemberModal({ onClose, onCreated }: AddMemberModalPro
                     backgroundColor: c,
                     border: color === c ? `2px solid white` : '2px solid transparent',
                     cursor: 'pointer',
-                    boxShadow: color === c ? `0 0 8px ${c}88` : 'none',
+                    boxShadow: color === c ? `0 0 0 3px ${c}33` : 'none',
                     transition: 'all 0.15s',
                   }}
                 />
@@ -199,9 +199,9 @@ export default function AddMemberModal({ onClose, onCreated }: AddMemberModalPro
                 flex: 2,
                 padding: '9px',
                 borderRadius: 'var(--radius-sm)',
-                border: '1px solid rgba(0,212,255,0.3)',
-                backgroundColor: 'var(--accent-dim)',
-                color: 'var(--accent)',
+                border: '1px solid var(--border-hover)',
+                backgroundColor: loading ? 'var(--bg-elevated)' : 'var(--text-primary)',
+                color: loading ? 'var(--text-muted)' : 'var(--bg-base)',
                 cursor: loading ? 'not-allowed' : 'pointer',
                 fontSize: '13px',
                 fontWeight: 600,

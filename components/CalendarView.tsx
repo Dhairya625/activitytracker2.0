@@ -9,13 +9,13 @@ interface CalendarViewProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Engineering: '#00d4ff',
-  Design: '#a78bfa',
-  Marketing: '#f59e0b',
-  Sales: '#10b981',
-  Operations: '#fb923c',
-  Research: '#60a5fa',
-  Other: '#6b7280',
+  Engineering: '#8fa3a6',
+  Design: '#9b8ea5',
+  Marketing: '#b9a36a',
+  Sales: '#87a987',
+  Operations: '#a78b7a',
+  Research: '#8f9fb6',
+  Other: '#8b8a84',
 }
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -69,6 +69,7 @@ export default function CalendarView({ tasks }: CalendarViewProps) {
     <div style={{
       backgroundColor: 'var(--bg-card)', border: '1px solid var(--border)',
       borderRadius: 'var(--radius-lg)', overflow: 'hidden',
+      boxShadow: 'inset 0 1px rgba(255,255,255,0.035)',
     }}>
       {/* Header */}
       <div style={{
@@ -130,14 +131,14 @@ export default function CalendarView({ tasks }: CalendarViewProps) {
                   padding: '6px 4px 4px',
                   borderRadius: '8px',
                   border: isSelected
-                    ? '1px solid var(--accent)'
+                    ? '1px solid var(--border-hover)'
                     : isToday
-                      ? '1px solid rgba(0,212,255,0.3)'
+                      ? '1px solid rgba(215,209,197,0.24)'
                       : '1px solid transparent',
                   backgroundColor: isSelected
-                    ? 'rgba(0,212,255,0.08)'
+                    ? 'rgba(255,255,255,0.055)'
                     : isToday
-                      ? 'rgba(0,212,255,0.04)'
+                      ? 'rgba(255,255,255,0.035)'
                       : 'transparent',
                   cursor: 'pointer',
                   transition: 'border-color 0.15s, background-color 0.15s',
@@ -148,7 +149,7 @@ export default function CalendarView({ tasks }: CalendarViewProps) {
                   if (!isSelected) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.03)'
                 }}
                 onMouseLeave={e => {
-                  if (!isSelected) (e.currentTarget as HTMLButtonElement).style.backgroundColor = isToday ? 'rgba(0,212,255,0.04)' : 'transparent'
+                  if (!isSelected) (e.currentTarget as HTMLButtonElement).style.backgroundColor = isToday ? 'rgba(255,255,255,0.035)' : 'transparent'
                 }}
               >
                 <span style={{
@@ -156,7 +157,7 @@ export default function CalendarView({ tasks }: CalendarViewProps) {
                   color: isToday ? 'var(--accent)' : 'var(--text-primary)',
                   width: '22px', height: '22px', borderRadius: '50%',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  backgroundColor: isToday ? 'rgba(0,212,255,0.12)' : 'transparent',
+                  backgroundColor: isToday ? 'rgba(255,255,255,0.08)' : 'transparent',
                 }}>
                   {day}
                 </span>

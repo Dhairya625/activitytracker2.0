@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle2, Clock, TrendingUp, Zap } from 'lucide-react'
+import { CheckCircle2, CircleDashed, ListChecks, TrendingUp } from 'lucide-react'
 import type { Task } from '@/lib/types'
 
 interface StatsBarProps {
@@ -14,19 +14,19 @@ export default function StatsBar({ tasks }: StatsBarProps) {
   const rate = total > 0 ? Math.round((completed / total) * 100) : 0
 
   const stats = [
-    { label: 'total tasks', value: total, icon: Zap, color: 'var(--accent)' },
+    { label: 'total tasks', value: total, icon: ListChecks, color: 'var(--accent)', progress: 100 },
     { label: 'completed', value: completed, icon: CheckCircle2, color: 'var(--success)' },
-    { label: 'in progress', value: pending, icon: Clock, color: 'var(--warning)' },
-    { label: 'completion', value: `${rate}%`, icon: TrendingUp, color: '#a78bfa' },
+    { label: 'in progress', value: pending, icon: CircleDashed, color: 'var(--warning)' },
+    { label: 'completion', value: `${rate}%`, icon: TrendingUp, color: 'var(--accent)', progress: rate },
   ]
 
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: 'repeat(4, 1fr)',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
       gap: '12px',
     }}>
-      {stats.map(({ label, value, icon: Icon, color }) => (
+      {stats.map(({ label, value, icon: Icon, color, progress }) => (
         <div
           key={label}
           className="animate-fade-in"
@@ -34,31 +34,45 @@ export default function StatsBar({ tasks }: StatsBarProps) {
             backgroundColor: 'var(--bg-card)',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
-            padding: '16px 20px',
+            padding: '16px',
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: 'column',
             gap: '14px',
+            minHeight: '132px',
+            boxShadow: 'inset 0 1px rgba(255,255,255,0.035)',
           }}
         >
-          <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: 'var(--radius-sm)',
-            backgroundColor: `${color}18`,
-            border: `1px solid ${color}28`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}>
-            <Icon size={16} color={color} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 650 }}>
+              {label}
+            </div>
+            <div style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: 'var(--bg-elevated)',
+              border: '1px solid var(--border)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Icon size={15} color={color} />
+            </div>
           </div>
-          <div>
-            <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2 }}>
+          <div style={{ marginTop: 'auto' }}>
+            <div style={{ fontSize: '28px', fontWeight: 720, color: 'var(--text-primary)', lineHeight: 1 }}>
               {value}
             </div>
-            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {label}
+            <div style={{ height: '4px', backgroundColor: 'var(--bg-elevated)', borderRadius: '99px', overflow: 'hidden', marginTop: '14px' }}>
+              <div style={{
+                height: '100%',
+                width: `${progress ?? (total > 0 ? Math.round((Number(value) / total) * 100) : 0)}%`,
+                backgroundColor: color,
+                opacity: 0.82,
+                borderRadius: '99px',
+                transition: 'width 0.35s ease',
+              }} />
             </div>
           </div>
         </div>

@@ -87,8 +87,9 @@ export default function Charts({ members, tasks }: ChartsProps) {
   const cardStyle = {
     backgroundColor: 'var(--bg-card)',
     border: '1px solid var(--border)',
-    borderRadius: 'var(--radius-lg)',
-    padding: '20px',
+    borderRadius: 'var(--radius-md)',
+    padding: '16px',
+    boxShadow: 'inset 0 1px rgba(255,255,255,0.035)',
   }
 
   const labelStyle = {
@@ -109,11 +110,11 @@ export default function Charts({ members, tasks }: ChartsProps) {
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '12px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px' }}>
       {/* Bar chart */}
       <div style={cardStyle}>
         <div style={labelStyle}>Task Distribution</div>
-        <ResponsiveContainer width="100%" height={220}>
+        <ResponsiveContainer width="100%" height={180}>
           <BarChart data={barData} barGap={2} barCategoryGap="30%">
             <XAxis
               dataKey="name"
@@ -157,11 +158,11 @@ export default function Charts({ members, tasks }: ChartsProps) {
       <div style={cardStyle}>
         <div style={labelStyle}>Share of Work</div>
         {pieData.length === 0 ? (
-          <div style={{ height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', fontSize: '12px' }}>
+          <div style={{ height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', fontSize: '12px' }}>
             No tasks yet
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={180}>
             <PieChart>
               <Pie
                 data={pieData}

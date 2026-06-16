@@ -13,13 +13,13 @@ interface TaskListProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Engineering: '#00d4ff',
-  Design: '#a78bfa',
-  Marketing: '#f59e0b',
-  Sales: '#10b981',
-  Operations: '#fb923c',
-  Research: '#60a5fa',
-  Other: '#6b7280',
+  Engineering: '#8fa3a6',
+  Design: '#9b8ea5',
+  Marketing: '#b9a36a',
+  Sales: '#87a987',
+  Operations: '#a78b7a',
+  Research: '#8f9fb6',
+  Other: '#8b8a84',
 }
 
 export default function TaskList({ tasks, onUpdate, currentMemberId, onEdit }: TaskListProps) {
@@ -53,7 +53,9 @@ export default function TaskList({ tasks, onUpdate, currentMemberId, onEdit }: T
         borderRadius: 'var(--radius-lg)', padding: '48px',
         textAlign: 'center', color: 'var(--text-muted)', fontSize: '13px',
       }}>
-        <div style={{ marginBottom: '8px', fontSize: '24px' }}>⚡</div>
+        <div className="pixel-companion" style={{ margin: '0 auto 14px', width: '46px', height: '46px' }} aria-hidden="true">
+          <div className="pixel-companion__face" />
+        </div>
         No tasks yet. Log your first task.
       </div>
     )
@@ -63,13 +65,14 @@ export default function TaskList({ tasks, onUpdate, currentMemberId, onEdit }: T
     <div style={{
       backgroundColor: 'var(--bg-card)', border: '1px solid var(--border)',
       borderRadius: 'var(--radius-lg)', overflow: 'hidden',
+      boxShadow: 'inset 0 1px rgba(255,255,255,0.035)',
     }}>
       <div style={{
         padding: '16px 20px', borderBottom: '1px solid var(--border)',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
         <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-          Recent Tasks
+          Task stream
         </div>
         <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
           {tasks.filter(t => t.completed).length}/{tasks.length} done
@@ -92,8 +95,16 @@ export default function TaskList({ tasks, onUpdate, currentMemberId, onEdit }: T
                 padding: '12px 20px',
                 borderBottom: i < tasks.length - 1 ? '1px solid var(--border)' : 'none',
                 opacity: isLoading ? 0.5 : 1,
-                transition: 'opacity 0.15s',
+                transition: 'opacity 0.15s, background-color 0.15s, transform 0.15s',
                 backgroundColor: isOwn ? 'rgba(255,255,255,0.01)' : 'transparent',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.025)'
+                e.currentTarget.style.transform = 'translateX(2px)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = isOwn ? 'rgba(255,255,255,0.01)' : 'transparent'
+                e.currentTarget.style.transform = 'translateX(0)'
               }}
             >
               {/* Toggle — only own tasks */}

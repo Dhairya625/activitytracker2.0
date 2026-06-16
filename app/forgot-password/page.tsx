@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{
             width: '44px', height: '44px', borderRadius: '10px',
-            backgroundColor: 'var(--accent-dim)', border: '1px solid rgba(0,212,255,0.25)',
+            backgroundColor: 'var(--accent-dim)', border: '1px solid var(--border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             margin: '0 auto 14px', boxShadow: '0 0 24px var(--accent-glow)',
           }}>
@@ -126,7 +126,7 @@ export default function ForgotPasswordPage() {
                     placeholder="you@example.com"
                     required
                     style={inputStyle}
-                    onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
+                    onFocus={e => (e.target.style.borderColor = 'var(--border-hover)')}
                     onBlur={e => (e.target.style.borderColor = 'var(--border)')}
                     autoFocus
                   />
@@ -147,13 +147,13 @@ export default function ForgotPasswordPage() {
                   disabled={loading}
                   style={{
                     padding: '10px', borderRadius: 'var(--radius-sm)',
-                    border: '1px solid rgba(0,212,255,0.3)',
-                    backgroundColor: loading ? 'rgba(0,212,255,0.06)' : 'var(--accent-dim)',
+                    border: '1px solid var(--border-hover)',
+                    backgroundColor: loading ? 'var(--bg-elevated)' : 'var(--accent-dim)',
                     color: 'var(--accent)', cursor: loading ? 'not-allowed' : 'pointer',
                     fontSize: '13px', fontWeight: 600, fontFamily: 'inherit', transition: 'background-color 0.15s',
                   }}
-                  onMouseEnter={e => { if (!loading) e.currentTarget.style.backgroundColor = 'rgba(0,212,255,0.18)' }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = loading ? 'rgba(0,212,255,0.06)' : 'var(--accent-dim)' }}
+                  onMouseEnter={e => { if (!loading) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)' }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = loading ? 'var(--bg-elevated)' : 'var(--accent-dim)' }}
                 >
                   {loading ? 'Sending…' : 'Send reset link'}
                 </button>
