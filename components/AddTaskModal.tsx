@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X } from 'lucide-react'
+import { CheckCircle2, Circle, X } from 'lucide-react'
 import type { Member, Task } from '@/lib/types'
 import { CATEGORIES } from '@/lib/types'
 import { createTask, updateTask } from '@/lib/api'
@@ -30,6 +30,7 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
   const [description, setDescription] = useState(task?.description ?? '')
   const [category, setCategory] = useState<string>(task?.category ?? CATEGORIES[0])
   const [taskDate, setTaskDate] = useState(task ? toDateInputValue(task.task_date || task.created_at) : todayInputValue())
+  const [completed, setCompleted] = useState(task?.completed ?? false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -45,12 +46,16 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
         description: description.trim() || undefined,
         category,
         task_date: taskDate,
+        completed,
       }
       if (task) {
         await updateTask(task.id, payload)
       } else {
         await createTask({
-          ...payload,
+          title: payload.title,
+          description: payload.description,
+          category: payload.category,
+          task_date: payload.task_date,
           member_id: currentMember.id,
         })
       }
@@ -191,6 +196,33 @@ export default function AddTaskModal({ currentMember, task, onClose, onCreated }
               ))}
             </select>
           </div>
+
+          {isEditing && (
+            <div>
+              <label style={labelStyle}>Status</label>
+              <button
+                type="button"
+                onClick={() => setCompleted(value => !value)}
+                style={{
+                  ...inputStyle,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  cursor: 'pointer',
+                  backgroundColor: completed ? 'rgba(16,185,129,0.08)' : 'var(--bg-elevated)',
+                  borderColor: completed ? 'rgba(16,185,129,0.25)' : 'var(--border)',
+                }}
+              >
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {completed ? <CheckCircle2 size={15} color="var(--success)" /> : <Circle size={15} color="var(--text-muted)" />}
+                  <span>{completed ? 'Completed' : 'Pending'}</span>
+                </span>
+                <span style={{ fontSize: '11px', color: completed ? 'var(--success)' : 'var(--text-muted)' }}>
+                  Click to mark {completed ? 'pending' : 'complete'}
+                </span>
+              </button>
+            </div>
+          )}
 
           {error && (
             <div style={{

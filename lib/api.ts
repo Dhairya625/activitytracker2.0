@@ -48,6 +48,10 @@ export type TaskInput = {
   task_date: string
 }
 
+export type TaskUpdateInput = Omit<TaskInput, 'member_id'> & {
+  completed: boolean
+}
+
 export async function createTask(task: TaskInput): Promise<Task> {
   const { data, error } = await supabase
     .from('tasks')
@@ -58,7 +62,7 @@ export async function createTask(task: TaskInput): Promise<Task> {
   return data
 }
 
-export async function updateTask(id: string, task: Omit<TaskInput, 'member_id'>): Promise<Task> {
+export async function updateTask(id: string, task: TaskUpdateInput): Promise<Task> {
   const { data, error } = await supabase
     .from('tasks')
     .update(task)
