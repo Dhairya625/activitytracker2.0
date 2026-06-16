@@ -171,7 +171,7 @@ export default function SetupPage() {
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)' }}
             >
               <Plus size={15} />
-              <span style={{ fontSize: '13px' }}>I'm not listed — add me</span>
+              <span style={{ fontSize: '13px' }}>I&apos;m not listed — add me</span>
             </button>
           ) : (
             <div style={{

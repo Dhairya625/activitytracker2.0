@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle2, Circle, Trash2, Tag, Lock } from 'lucide-react'
+import { CalendarDays, CheckCircle2, Circle, Lock, Pencil, Tag, Trash2 } from 'lucide-react'
 import type { Task } from '@/lib/types'
 import { toggleTask, deleteTask } from '@/lib/api'
 import { useState } from 'react'
@@ -9,6 +9,7 @@ interface TaskListProps {
   tasks: Task[]
   onUpdate: () => void
   currentMemberId: string
+  onEdit: (task: Task) => void
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -21,7 +22,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   Other: '#6b7280',
 }
 
-export default function TaskList({ tasks, onUpdate, currentMemberId }: TaskListProps) {
+export default function TaskList({ tasks, onUpdate, currentMemberId, onEdit }: TaskListProps) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
 
   async function handleToggle(task: Task) {
@@ -39,8 +40,10 @@ export default function TaskList({ tasks, onUpdate, currentMemberId }: TaskListP
     setLoadingId(null)
   }
 
-  function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  function formatTaskDate(task: Task) {
+    const value = task.task_date || task.created_at
+    const date = value.includes('T') ? new Date(value) : new Date(`${value}T12:00:00`)
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   }
 
   if (tasks.length === 0) {
@@ -152,26 +155,46 @@ export default function TaskList({ tasks, onUpdate, currentMemberId }: TaskListP
                 </div>
 
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)', minWidth: '40px', textAlign: 'right' }}>
-                  {formatDate(task.created_at)}
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <CalendarDays size={10} />
+                    {formatTaskDate(task)}
+                  </span>
                 </div>
 
-                {/* Delete — only own tasks */}
+                {/* Edit/delete - only own tasks */}
                 {isOwn ? (
-                  <button
-                    onClick={() => handleDelete(task.id)}
-                    disabled={isLoading}
-                    style={{
-                      background: 'none', border: 'none', cursor: 'pointer',
-                      padding: '4px', display: 'flex', color: 'var(--text-muted)',
-                      borderRadius: '4px', transition: 'color 0.15s',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--danger)')}
-                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
-                  >
-                    <Trash2 size={13} />
-                  </button>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    <button
+                      onClick={() => onEdit(task)}
+                      disabled={isLoading}
+                      title="Edit task"
+                      style={{
+                        background: 'none', border: 'none', cursor: 'pointer',
+                        padding: '4px', display: 'flex', color: 'var(--text-muted)',
+                        borderRadius: '4px', transition: 'color 0.15s',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent)')}
+                      onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
+                    >
+                      <Pencil size={13} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(task.id)}
+                      disabled={isLoading}
+                      title="Delete task"
+                      style={{
+                        background: 'none', border: 'none', cursor: 'pointer',
+                        padding: '4px', display: 'flex', color: 'var(--text-muted)',
+                        borderRadius: '4px', transition: 'color 0.15s',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.color = 'var(--danger)')}
+                      onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
                 ) : (
-                  <div style={{ width: '21px', display: 'flex', justifyContent: 'center', opacity: 0.2 }}>
+                  <div style={{ width: '42px', display: 'flex', justifyContent: 'center', opacity: 0.2 }}>
                     <Lock size={11} color="var(--text-muted)" />
                   </div>
                 )}

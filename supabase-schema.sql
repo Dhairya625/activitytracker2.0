@@ -14,8 +14,12 @@ create table if not exists tasks (
   member_id uuid not null references members(id) on delete cascade,
   category text not null default 'Other',
   completed boolean not null default false,
+  task_date date not null default current_date,
   created_at timestamptz not null default now()
 );
+
+-- Existing projects can run this before deploying the app change:
+alter table tasks add column if not exists task_date date not null default current_date;
 
 -- Enable Row Level Security
 alter table members enable row level security;
@@ -27,4 +31,5 @@ create policy "allow all tasks" on tasks for all using (true) with check (true);
 
 -- Indexes for common queries
 create index if not exists tasks_member_id_idx on tasks(member_id);
+create index if not exists tasks_task_date_idx on tasks(task_date desc);
 create index if not exists tasks_created_at_idx on tasks(created_at desc);

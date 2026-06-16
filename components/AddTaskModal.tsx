@@ -2,39 +2,62 @@
 
 import { useState } from 'react'
 import { X } from 'lucide-react'
-import type { Member } from '@/lib/types'
+import type { Member, Task } from '@/lib/types'
 import { CATEGORIES } from '@/lib/types'
-import { createTask } from '@/lib/api'
+import { createTask, updateTask } from '@/lib/api'
 
 interface AddTaskModalProps {
   currentMember: Member
+  task?: Task
   onClose: () => void
   onCreated: () => void
 }
 
-export default function AddTaskModal({ currentMember, onClose, onCreated }: AddTaskModalProps) {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [category, setCategory] = useState<string>(CATEGORIES[0])
+function toDateInputValue(value: string) {
+  return value.includes('T') ? value.slice(0, 10) : value
+}
+
+function todayInputValue() {
+  const now = new Date()
+  const offset = now.getTimezoneOffset()
+  const localDate = new Date(now.getTime() - offset * 60 * 1000)
+  return localDate.toISOString().slice(0, 10)
+}
+
+export default function AddTaskModal({ currentMember, task, onClose, onCreated }: AddTaskModalProps) {
+  const isEditing = Boolean(task)
+  const [title, setTitle] = useState(task?.title ?? '')
+  const [description, setDescription] = useState(task?.description ?? '')
+  const [category, setCategory] = useState<string>(task?.category ?? CATEGORIES[0])
+  const [taskDate, setTaskDate] = useState(task ? toDateInputValue(task.task_date || task.created_at) : todayInputValue())
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!title.trim()) { setError('Title required'); return }
+    if (!taskDate) { setError('Date required'); return }
     setLoading(true)
     setError('')
     try {
-      await createTask({
+      const payload = {
         title: title.trim(),
         description: description.trim() || undefined,
-        member_id: currentMember.id,
         category,
-      })
+        task_date: taskDate,
+      }
+      if (task) {
+        await updateTask(task.id, payload)
+      } else {
+        await createTask({
+          ...payload,
+          member_id: currentMember.id,
+        })
+      }
       onCreated()
       onClose()
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to create task')
+      setError(err instanceof Error ? err.message : `Failed to ${isEditing ? 'update' : 'create'} task`)
     } finally {
       setLoading(false)
     }
@@ -87,7 +110,9 @@ export default function AddTaskModal({ currentMember, onClose, onCreated }: AddT
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
           <div>
-            <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>Log Task</div>
+            <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              {isEditing ? 'Edit Task' : 'Log Task'}
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '3px' }}>
               <div style={{
                 width: '14px', height: '14px', borderRadius: '50%',
@@ -99,7 +124,7 @@ export default function AddTaskModal({ currentMember, onClose, onCreated }: AddT
                 {currentMember.name.charAt(0).toUpperCase()}
               </div>
               <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                Logging as <span style={{ color: currentMember.color }}>{currentMember.name}</span>
+                {isEditing ? 'Updating' : 'Logging as'} <span style={{ color: currentMember.color }}>{currentMember.name}</span>
               </span>
             </div>
           </div>
@@ -135,6 +160,18 @@ export default function AddTaskModal({ currentMember, onClose, onCreated }: AddT
               placeholder="More details..."
               rows={2}
               style={{ ...inputStyle, resize: 'none' }}
+              onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
+              onBlur={e => (e.target.style.borderColor = 'var(--border)')}
+            />
+          </div>
+
+          <div>
+            <label style={labelStyle}>Task Date</label>
+            <input
+              type="date"
+              value={taskDate}
+              onChange={e => setTaskDate(e.target.value)}
+              style={{ ...inputStyle, colorScheme: 'dark' }}
               onFocus={e => (e.target.style.borderColor = 'rgba(0,212,255,0.4)')}
               onBlur={e => (e.target.style.borderColor = 'var(--border)')}
             />
@@ -188,7 +225,7 @@ export default function AddTaskModal({ currentMember, onClose, onCreated }: AddT
                 fontSize: '13px', fontWeight: 600, fontFamily: 'inherit',
               }}
             >
-              {loading ? 'Logging…' : 'Log Task'}
+              {loading ? (isEditing ? 'Saving…' : 'Logging…') : (isEditing ? 'Save Changes' : 'Log Task')}
             </button>
           </div>
         </form>

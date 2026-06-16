@@ -12,6 +12,7 @@ export interface Task {
   member_id: string
   category: string
   completed: boolean
+  task_date: string
   created_at: string
   member?: Member
 }

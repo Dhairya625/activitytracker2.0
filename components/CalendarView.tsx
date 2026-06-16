@@ -6,7 +6,6 @@ import type { Task } from '@/lib/types'
 
 interface CalendarViewProps {
   tasks: Task[]
-  currentMemberId: string
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -21,7 +20,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-export default function CalendarView({ tasks, currentMemberId }: CalendarViewProps) {
+export default function CalendarView({ tasks }: CalendarViewProps) {
   const today = new Date()
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1))
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
@@ -49,7 +48,8 @@ export default function CalendarView({ tasks, currentMemberId }: CalendarViewPro
   // Map tasks to date strings YYYY-MM-DD
   const tasksByDate: Record<string, Task[]> = {}
   for (const task of tasks) {
-    const d = new Date(task.created_at)
+    const value = task.task_date || task.created_at
+    const d = value.includes('T') ? new Date(value) : new Date(`${value}T12:00:00`)
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
     if (!tasksByDate[key]) tasksByDate[key] = []
     tasksByDate[key].push(task)

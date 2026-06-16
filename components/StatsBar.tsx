@@ -1,14 +1,13 @@
 'use client'
 
 import { CheckCircle2, Clock, TrendingUp, Zap } from 'lucide-react'
-import type { Member, Task } from '@/lib/types'
+import type { Task } from '@/lib/types'
 
 interface StatsBarProps {
-  members: Member[]
   tasks: Task[]
 }
 
-export default function StatsBar({ members, tasks }: StatsBarProps) {
+export default function StatsBar({ tasks }: StatsBarProps) {
   const total = tasks.length
   const completed = tasks.filter(t => t.completed).length
   const pending = total - completed

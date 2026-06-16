@@ -41,6 +41,7 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [dataLoading, setDataLoading] = useState(true)
   const [showAddTask, setShowAddTask] = useState(false)
+  const [editingTask, setEditingTask] = useState<Task | null>(null)
   const [view, setView] = useState<ViewMode>('list')
   const [filters, setFilters] = useState<Filters>({ member: '', category: '', status: 'all' })
 
@@ -60,7 +61,10 @@ export default function Home() {
     if (authLoading) return
     if (!user) { router.replace('/login'); return }
     if (!currentMember) { router.replace('/setup'); return }
-    load()
+    const loadTimer = window.setTimeout(() => {
+      void load()
+    }, 0)
+    return () => window.clearTimeout(loadTimer)
   }, [authLoading, user, currentMember, router, load])
 
   const filteredTasks = useMemo(() => {
@@ -90,7 +94,7 @@ export default function Home() {
         maxWidth: '1400px', margin: '0 auto', padding: '24px',
         display: 'flex', flexDirection: 'column', gap: '16px',
       }}>
-        <StatsBar members={members} tasks={tasks} />
+        <StatsBar tasks={tasks} />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -105,9 +109,14 @@ export default function Home() {
               filteredCount={filteredTasks.length}
             />
             {view === 'list' ? (
-              <TaskList tasks={filteredTasks} onUpdate={load} currentMemberId={currentMember.id} />
+              <TaskList
+                tasks={filteredTasks}
+                onUpdate={load}
+                currentMemberId={currentMember.id}
+                onEdit={setEditingTask}
+              />
             ) : (
-              <CalendarView tasks={filteredTasks} currentMemberId={currentMember.id} />
+              <CalendarView tasks={filteredTasks} />
             )}
           </div>
           <Leaderboard members={members} tasks={tasks} onUpdate={load} />
@@ -118,6 +127,14 @@ export default function Home() {
         <AddTaskModal
           currentMember={currentMember}
           onClose={() => setShowAddTask(false)}
+          onCreated={load}
+        />
+      )}
+      {editingTask && (
+        <AddTaskModal
+          currentMember={currentMember}
+          task={editingTask}
+          onClose={() => setEditingTask(null)}
           onCreated={load}
         />
       )}

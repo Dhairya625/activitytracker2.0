@@ -109,7 +109,7 @@ export default function ForgotPasswordPage() {
           ) : (
             <>
               <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '20px', lineHeight: 1.5 }}>
-                Enter your email and we'll send a reset link.
+                Enter your email and we&apos;ll send a reset link.
               </div>
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div>
